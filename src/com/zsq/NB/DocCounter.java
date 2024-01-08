@@ -4,8 +4,6 @@
  * 统计每个类别的文件数目，用于计算先验概率
  * Mapper：list of Doc -> <type, 1>
  * Reducer：list of <type, 1> -> <type, cnt>
- * Tools:
- *      
  */
 
 package com.zsq.NB;
@@ -23,6 +21,7 @@ import org.apache.hadoop.util.ToolRunner;
 import java.io.IOException;
 
 public class DocCounter extends Configured implements Tool {
+
     public static class DocCounterMapper extends Mapper<Text, BytesWritable, Text, IntWritable> {
         private final static IntWritable one = new IntWritable(1);
 
@@ -51,14 +50,14 @@ public class DocCounter extends Configured implements Tool {
     public int run(String[] strings) throws Exception {
         Configuration conf = getConf();
         FileSystem hdfs = FileSystem.get(conf);
-
+        // delete origin result
         Path docPath = new Path(Config.DOC_COUNT_PATH);
         if (hdfs.exists(docPath)) {
             hdfs.delete(docPath, true);
         }
         Job job_DocCounterJob = Job.getInstance(conf, "DocCounter");
         job_DocCounterJob.setJarByClass(DocCounter.class);
-
+        // set mapper/reducer
         job_DocCounterJob.setMapperClass(DocCounterMapper.class);
         job_DocCounterJob.setCombinerClass(DocCounterReducer.class);
         job_DocCounterJob.setReducerClass(DocCounterReducer.class);
@@ -66,7 +65,9 @@ public class DocCounter extends Configured implements Tool {
         job_DocCounterJob.setInputFormatClass(MyFileInputFormat.class);
         job_DocCounterJob.setOutputKeyClass(Text.class);
         job_DocCounterJob.setOutputValueClass(IntWritable.class);
-        FileInputFormat.addInputPath(job_DocCounterJob, new Path(Config.TRAIN_SET_PATH));
+
+        FileInputFormat.addInputPath(job_DocCounterJob, new Path(Config.TRAIN_SET_PATH + Config.CLASS_A_NAME));
+        FileInputFormat.addInputPath(job_DocCounterJob, new Path(Config.TRAIN_SET_PATH + Config.CLASS_B_NAME));
         FileOutputFormat.setOutputPath(job_DocCounterJob, docPath);
         return job_DocCounterJob.waitForCompletion(true) ? 0 : 1;
     }

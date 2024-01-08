@@ -49,6 +49,7 @@ public class MyFileInputFormat extends FileInputFormat<Text, BytesWritable> {
 
         @Override
         public boolean nextKeyValue() throws IOException, InterruptedException {
+            System.out.printf("path: %s\n", fileSplit.getPath().toString());
             if (!isFinished) {
                 byte[] contents = new byte[(int) fileSplit.getLength()];
                 FileSystem fs = null;

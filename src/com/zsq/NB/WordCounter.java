@@ -2,9 +2,8 @@
  * Author：zsq
  * Date：2024.1.7
  * 统计每个
- * Mapper：list of Doc -> <type, 1>
- * Reducer：list of <type, 1> -> <type, cnt>
- * Tools:
+ * Mapper：list of Doc of different Type -> <<Type, Word>, 1>
+ * Reducer：list of <<Type, Word>, 1> -> <<Type, Word>, cnt>
  *      
  */
 
@@ -37,8 +36,8 @@ public class WordCounter extends Configured implements Tool {
         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             InputSplit inputSplit = context.getInputSplit();
             String className = ((FileSplit) inputSplit).getPath().getParent().getName();
-            String line_context = value.toString();
-            keyOut.set(className + '\t' + line_context);
+            String word = value.toString();
+            keyOut.set(className + '\t' + word);
             context.write(keyOut, one);
         }
     }
@@ -76,8 +75,8 @@ public class WordCounter extends Configured implements Tool {
         job_WordCounterJob.setOutputKeyClass(Text.class);
         job_WordCounterJob.setOutputValueClass(IntWritable.class);
 
-        FileInputFormat.setInputDirRecursive(job_WordCounterJob, true);
-        FileInputFormat.addInputPath(job_WordCounterJob, wordPath);
+        FileInputFormat.addInputPath(job_WordCounterJob, new Path(Config.TRAIN_SET_PATH + Config.CLASS_A_NAME));
+        FileInputFormat.addInputPath(job_WordCounterJob, new Path(Config.TRAIN_SET_PATH + Config.CLASS_B_NAME));
 
         FileOutputFormat.setOutputPath(job_WordCounterJob, new Path(Config.WORD_COUNT_PATH));
         boolean result = job_WordCounterJob.waitForCompletion(true);

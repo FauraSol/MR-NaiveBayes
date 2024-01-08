@@ -8,5 +8,15 @@ public class NaiveBayes {
     Configuration conf = new Configuration();
     DocCounter docCounter = new DocCounter();
     ToolRunner.run(conf, docCounter, args);
+    WordCounter wordCounter = new WordCounter();
+    ToolRunner.run(conf, wordCounter, args);
+    TestPreparation testPreparation = new TestPreparation();
+    ToolRunner.run(conf, testPreparation, args);
+    // 预测测试集文件类别
+    TestPrediction testPrediction = new TestPrediction();
+    ToolRunner.run(conf, testPrediction, args);
+    // 评估测试效果，计算precision，recall，F1
+    Statistics stat = new Statistics();
+    ToolRunner.run(conf, stat, args);
   }
 }
