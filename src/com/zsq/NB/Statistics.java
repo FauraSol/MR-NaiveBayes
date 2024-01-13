@@ -19,20 +19,20 @@ public class Statistics extends Configured implements Tool {
         String classFilePath = Config.PREDICTION_PATH + "/part-r-00000";
         FileSystem fs = FileSystem.get(URI.create(classFilePath), conf);
         FSDataInputStream fsr = fs.open(new Path(classFilePath));
-        ArrayList<String> ClassNames = new ArrayList<>(); // 得到待分类的类名
-        ArrayList<Integer> TruePositive = new ArrayList<>(); // TP,属于该类且被分到该类的数目
-        ArrayList<Integer> FalseNegative = new ArrayList<>(); // FN,属于该类但没分到该类的数目
-        ArrayList<Integer> FalsePositive = new ArrayList<>(); // FP,不属于该类但分到该类的数目
-        ArrayList<Double> precision = new ArrayList<>(); // Precision精度:P = TP/(TP+FP)
-        ArrayList<Double> recall = new ArrayList<>(); // Recall精度: R = TP/(TP+FN)
-        ArrayList<Double> F1 = new ArrayList<>(); // P和R的调和平均:F1 = 2PR/(P+R)
+        ArrayList<String> ClassNames = new ArrayList<>();
+        ArrayList<Integer> TruePositive = new ArrayList<>();
+        ArrayList<Integer> FalseNegative = new ArrayList<>();
+        ArrayList<Integer> FalsePositive = new ArrayList<>();
+        ArrayList<Double> precision = new ArrayList<>();
+        ArrayList<Double> recall = new ArrayList<>();
+        ArrayList<Double> F1 = new ArrayList<>();
         BufferedReader reader = null;
-        Integer temp = 0; // 下面用于计算时的暂时存储数据
+        Integer temp = 0;
         try {
             reader = new BufferedReader(new InputStreamReader(fsr));
             String lineValue = null;
             while ((lineValue = reader.readLine()) != null) {
-                // 按站空白字符分词，分词后得到的数组中，前三项依次为：真实类别名，文件名，预测类别名
+
                 String[] values = lineValue.split("\\s");
                 if (!ClassNames.contains(values[0])) {
                     ClassNames.add(values[0]);
@@ -67,19 +67,14 @@ public class Statistics extends Configured implements Tool {
                 recall.add(r);
                 F1.add(F);
             }
-            /*
-             * 计算宏平均和微平均
-             * 以计算precision为例
-             * 宏平均的precision：(p1+p2+...+pN)/N
-             * 微平均的precision：对应各项PR相加后再计算precision
-             */
+
             double p_Sum_Ma = 0.0;
             double r_Sum_Ma = 0.0;
             double F1_Sum_Ma = 0.0;
             Integer TP_Sum_Mi = 0;
             Integer FN_Sum_Mi = 0;
             Integer FP_Sum_Mi = 0;
-            int n = ClassNames.size(); // 类的种类数量
+            int n = ClassNames.size();
             for (int i = 0; i < n; i++) {
                 p_Sum_Ma += precision.get(i);
                 r_Sum_Ma += recall.get(i);
@@ -88,11 +83,11 @@ public class Statistics extends Configured implements Tool {
                 FN_Sum_Mi += FalseNegative.get(i);
                 FP_Sum_Mi += FalsePositive.get(i);
             }
-            // 宏平均
+
             double p_Ma = p_Sum_Ma / n;
             double r_Ma = r_Sum_Ma / n;
             double F1_Ma = F1_Sum_Ma / n;
-            // 微平均
+
             double p_Mi = TP_Sum_Mi * 1.0 / (TP_Sum_Mi + FP_Sum_Mi);
             ;
             double r_Mi = TP_Sum_Mi * 1.0 / (TP_Sum_Mi + FN_Sum_Mi);

@@ -15,7 +15,6 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -30,8 +29,8 @@ import java.io.IOException;
 
 public class TestPreparation extends Configured implements Tool {
 
-    public static class TestPreparation_Mapper extends Mapper<LongWritable, Text, Text, Text> {
-        private Text mapKey = new Text();
+    public static class TestPreparation_Mapper extends Mapper<LongWritable, Text, PairWriteable, Text> {
+        private PairWriteable mapKey = new PairWriteable();
         private Text mapValue = new Text();
 
         @Override
@@ -39,19 +38,19 @@ public class TestPreparation extends Configured implements Tool {
             InputSplit inputsplit = context.getInputSplit();
             String className = ((FileSplit) inputsplit).getPath().getParent().getName();
             String fileName = ((FileSplit) inputsplit).getPath().getName();
-            // simply use "a \t b" to combine key
-            mapKey.set(className + "\t" + fileName);
+            // use <className, fileName> as key, which is implemented in PairWriteable
+            mapKey.set(className, fileName);
             mapValue.set(value.toString());
             context.write(mapKey, mapValue);
         }
     }
 
-    public static class TestPreparation_Reducer extends Reducer<Text, Text, Text, Text> {
+    public static class TestPreparation_Reducer extends Reducer<PairWriteable, Text, PairWriteable, Text> {
         private Text result = new Text();
         private StringBuffer stringBuffer;
 
         @Override
-        protected void reduce(Text key, Iterable<Text> values, Context context)
+        protected void reduce(PairWriteable key, Iterable<Text> values, Context context)
                 throws IOException, InterruptedException {
             stringBuffer = new StringBuffer();
             for (Text value : values) {
@@ -78,9 +77,9 @@ public class TestPreparation extends Configured implements Tool {
         job_Preparation.setCombinerClass(TestPreparation_Reducer.class);
         job_Preparation.setReducerClass(TestPreparation_Reducer.class);
         // IO configure
-        job_Preparation.setMapOutputKeyClass(Text.class);
+        job_Preparation.setMapOutputKeyClass(PairWriteable.class);
         job_Preparation.setMapOutputValueClass(Text.class);
-        job_Preparation.setOutputKeyClass(Text.class);
+        job_Preparation.setOutputKeyClass(PairWriteable.class);
         job_Preparation.setOutputValueClass(Text.class);
         FileInputFormat.setInputDirRecursive(job_Preparation, true);
         FileInputFormat.addInputPath(job_Preparation, new Path(Config.TEST_SET_PATH));
