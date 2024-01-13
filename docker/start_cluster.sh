@@ -22,10 +22,11 @@ if [[ ${CREATE_HADOOP_MASTER} == "YES" ]]; then
 		--net=hadoop \
 		-p 50070:50070 \
 		-p 8088:8088 \
+		-p 52200:22 \
 		-e HADOOP_SLAVE_NUMBER=$HADOOP_SLAVE_NUMBER \
 		--name hadoop-master \
 		--hostname hadoop-master \
-		lsc/hadoop:2.7.7 &> /dev/null
+		zsq/hadoop:2.7.7 &> /dev/null
 fi
 
 # Start hadoop slave containers
@@ -39,10 +40,11 @@ do
 	sudo docker run -itd \
 		--net=hadoop \
 		-p 5007$i:50075 \
+		-p 5220$i:22 \
 		-e HADOOP_SLAVE_NUMBER=$HADOOP_SLAVE_NUMBER \
 		--name hadoop-slave$i \
 		--hostname hadoop-slave$i \
-		lsc/hadoop:2.7.7 &> /dev/null
+		zsq/hadoop:2.7.7 &> /dev/null
 	
 	i=$(($i+1))
 done
