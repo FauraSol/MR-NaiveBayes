@@ -59,9 +59,7 @@ ssh -p <host_port> root@<host_ip_or_localhost>
         "/usr/local/hadoop/share/hadoop/common/lib/commons-logging-1.1.3.jar",
         "/usr/local/hadoop/share/hadoop/hdfs/hadoop-hdfs-2.7.7.jar",
         "/usr/local/hadoop/share/hadoop/hdfs/hadoop-hdfs-nfs-2.7.7.jar",
-        //"/usr/local/hadoop/share/hadoop/hdfs/lib/*.jar",
         "/usr/local/hadoop/share/hadoop/mapreduce/*.jar",
-        //"/usr/local/hadoop/share/hadoop/mapreduce/lib/*.jar"
         "/usr/local/hadoop/",
     ],
     "java.jdt.ls.java.home": "/root/Naive_Bayes/jdk-17.0.9+9",
