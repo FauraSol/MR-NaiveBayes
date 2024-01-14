@@ -28,8 +28,8 @@ import org.apache.hadoop.util.ToolRunner;
 import java.io.IOException;
 
 public class WordCounter extends Configured implements Tool {
-    public static class WordCounterMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-        private Text keyOut = new Text();
+    public static class WordCounterMapper extends Mapper<LongWritable, Text, PairWriteable, IntWritable> {
+        private PairWriteable keyOut = new PairWriteable();
         private final static IntWritable one = new IntWritable(1);
 
         @Override
@@ -37,15 +37,15 @@ public class WordCounter extends Configured implements Tool {
             InputSplit inputSplit = context.getInputSplit();
             String className = ((FileSplit) inputSplit).getPath().getParent().getName();
             String word = value.toString();
-            keyOut.set(className + '\t' + word);
+            keyOut.set(className, word);
             context.write(keyOut, one);
         }
     }
 
-    public static class WordCounterReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+    public static class WordCounterReducer extends Reducer<PairWriteable, IntWritable, PairWriteable, IntWritable> {
         private IntWritable result = new IntWritable();
 
-        protected void reduce(Text key, Iterable<IntWritable> values, Context context)
+        protected void reduce(PairWriteable key, Iterable<IntWritable> values, Context context)
                 throws IOException, InterruptedException {
             int num = 0;
             for (IntWritable value : values) {
@@ -69,10 +69,10 @@ public class WordCounter extends Configured implements Tool {
         job_WordCounterJob.setMapperClass(WordCounterMapper.class);
         job_WordCounterJob.setReducerClass(WordCounterReducer.class);
 
-        job_WordCounterJob.setMapOutputKeyClass(Text.class);
+        job_WordCounterJob.setMapOutputKeyClass(PairWriteable.class);
         job_WordCounterJob.setMapOutputValueClass(IntWritable.class);
 
-        job_WordCounterJob.setOutputKeyClass(Text.class);
+        job_WordCounterJob.setOutputKeyClass(PairWriteable.class);
         job_WordCounterJob.setOutputValueClass(IntWritable.class);
 
         FileInputFormat.addInputPath(job_WordCounterJob, new Path(Config.TRAIN_SET_PATH + Config.CLASS_A_NAME));
