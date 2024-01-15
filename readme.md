@@ -4,7 +4,7 @@
 
 MapReduce作业，从docker到java都是从开始学的，所以记录一下
 
-**内部人员直接去51用已经起好的docker，直接跳转到测试阶段**
+**内部人员直接去51用已经起好的docker，docker里有Naive_Bayes文件夹，就是本工程，直接跳转到最后的测试阶段**
 
 ## 起Docker
 
