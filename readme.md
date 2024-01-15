@@ -84,14 +84,18 @@ ssh -p <host_port> root@<host_ip_or_localhost>
 
 具体等写完实验报告再说
 简单提一嘴四个MapReduce任务
-DocCounter：
-	作用：计算各个类别文档的数目
-WordCounter：
-	作用：计算每个类别文档中，不同单词的数目
-TestPreparation：
-	作用：预处理测试集的文件，因为后面要把每个单词出现在每个类的概率理想化为独立事件，所以要进行文档到单词list的映射
- TestPrediction：
-	作用：setup里首先计算了先验概率和后验概率，然后完成对测试集文档的预测过程。
+
+* DocCounter：
+	* 作用：计算各个类别文档的数目
+ 
+* WordCounter：
+	* 作用：计算每个类别文档中，不同单词的数目
+ 
+* TestPreparation：
+	* 作用：预处理测试集的文件，因为后面要把每个单词出现在每个类的概率理想化为独立事件，所以要进行文档到单词list的映射
+ 
+ * TestPrediction：
+	* 作用：setup里首先计算了先验概率和后验概率，然后完成对测试集文档的预测过程。
 
 ## All You Need To Do
 这一部分写给像我一样毫无Java、hadoop、Bayes基础的人速通实验报告
