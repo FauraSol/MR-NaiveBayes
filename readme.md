@@ -96,7 +96,7 @@ TestPreparation：
 ## All You Need To Do
 这一部分写给像我一样毫无Java、hadoop、Bayes基础的人速通实验报告
 
-1. 通过ssh+vscode在docker上远程开发（先在51上`sudo docker exec -it <tag> bash`启动docker的终端），用户名root，密码zsq；外部人员可自行在docker内部启动ssh服务
+1. 通过ssh+vscode在docker上远程开发（先在51上`sudo docker exec -it <tag> bash`启动docker的终端），用户名root，密码zsq；外部人员可自行在docker内部启动ssh服务，`<tag>`就是`sudo docker container ls -a`看名为`hadoop:master/hadoop:slave1/hadoop:slave2`的对应的那一长串哈希值，想git的commit节点一样，取前几位就可以，不必全抄
 2. 本实验的测试部分参考课程文件夹的数据压缩包内的数据readme.txt，请阅读后食用，已经使用的数据集是AUSTR、CANA、BELG、GREECE，建议换个数据集以防结果完全相同。具体而言，建议测试集和训练集用到的国家相同，每个国家各取70%扔到训练集，30%扔到测试集
 3. `hdfs put`将选的到对应路径，并修改Config.java里的路径
 4. 安装vscode的Java扩展包，利用下图扩展包的功能一键打包，截歪了，点箭头（在其他人的环境中发生过找不到包依赖的情况，实践得到的解决方案是在settings.json中将注释掉的通配符表示的包依赖取消注释）![1KEYL8)5(UZ06_{JTSSKF98](https://github.com/FauraSol/MR-NaiveBayes/assets/56348816/25a264bf-31b4-4e7c-ad46-05cc13a59c22)
