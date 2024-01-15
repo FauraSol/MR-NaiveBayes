@@ -99,7 +99,7 @@ TestPreparation：
 1. 通过ssh+vscode在docker上远程开发（先在51上`sudo docker exec -it <tag> bash`启动docker的终端），用户名root，密码zsq；外部人员可自行在docker内部启动ssh服务
 2. 本实验的测试部分参考课程文件夹的数据压缩包内的数据readme.txt，请阅读后食用，已经使用的数据集是AUSTR、CANA、BELG、GREECE，建议换个数据集以防结果完全相同。具体而言，建议测试集和训练集用到的国家相同，每个国家各取70%扔到训练集，30%扔到测试集
 3. `hdfs put`将选的到对应路径，并修改Config.java里的路径
-4. 安装vscode的Java扩展包，利用下图扩展包的功能一键打包（在其他人的环境中发生过找不到包依赖的情况，实践得到的解决方案是在settings.json中将注释掉的通配符表示的包依赖取消注释）![1KEYL8)5(UZ06_{JTSSKF98](https://github.com/FauraSol/MR-NaiveBayes/assets/56348816/25a264bf-31b4-4e7c-ad46-05cc13a59c22)
+4. 安装vscode的Java扩展包，利用下图扩展包的功能一键打包，截歪了，点箭头（在其他人的环境中发生过找不到包依赖的情况，实践得到的解决方案是在settings.json中将注释掉的通配符表示的包依赖取消注释）![1KEYL8)5(UZ06_{JTSSKF98](https://github.com/FauraSol/MR-NaiveBayes/assets/56348816/25a264bf-31b4-4e7c-ad46-05cc13a59c22)
 5. 按照`start.sh`中的唯一一条未注释掉的命令，将其复制到第1步启动的终端里运行（ssh目前无法启动hadoop），在启动hadoop服务，前往192.168.1.51:8088（非内部人员使用对应的宿主机ip的8088端口）完成所需的任务截图（其他注释掉的命令是检查任务输出的），保存好执行此命令后的输出，这是需要截图的内容
 6. 向报告中复制代码时批量替换所有zsq为你的名字（不建议执行前在代码中修改，因为包名带了zsq，如果修改，需要按照相似的目录格式重新起项目，重新起项目时利用vscode Java扩展包，选择maven构建项目）（第一次写java，创项目是一路确定创建的，没意识到文件目录和包名要对应且好像改了会出问题）
 
